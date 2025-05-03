@@ -1,10 +1,26 @@
-from flask import Flask
+from flask import Flask, render_template, request
+import requests
 
 app = Flask(__name__)
 
-@app.route("/")
-def hello():
-    return "Hello from Flask on Azure!"
+# URL of your deployed API server
+api_url = "https://salary-api-cdschilling-duanedh7cbdehfag.centralus-01.azurewebsites.net/predict"
 
-if __name__ == "__main__":
-    app.run()
+    app.run()@app.route("/", methods=["GET", "POST"])
+def index():
+    prediction = None
+    if request.method == "POST":
+        education = request.form["education"]
+        experience = request.form["experience"]
+        
+        response = requests.post(api_url, json={
+            "education": education,
+            "experience": int(experience)
+        })
+        
+        if response.status_code == 200:
+            prediction = response.json().get("prediction")
+        else:
+            prediction = "Error: Could not get prediction."
+
+    return render_template("index.html", prediction=prediction)

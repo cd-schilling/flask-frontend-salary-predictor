@@ -6,7 +6,7 @@ app = Flask(__name__)
 # URL of your deployed API server
 api_url = "https://salary-api-cdschilling-duanedh7cbdehfag.centralus-01.azurewebsites.net/predict"
 
-    app.run()@app.route("/", methods=["GET", "POST"])
+@app.route("/", methods=["GET", "POST"])
 def index():
     prediction = None
     if request.method == "POST":
